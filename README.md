@@ -1,5 +1,5 @@
 # IOST-champ
-<img src="-">
+<img src="https://www.blockdevs.asia/wp-content/uploads/2019/02/IOST-BlockDevs-Asia.png">
 
 Blockchain-based user and developer challenge with verifiable scoring and certification. Our goal is to make technical documentation and onboarding with IOST more fun by Gamification & Incentivisation.
 <h6>Check out our live demo! http://IOST.champ.blockdevs.asia/#/signup</h6>
