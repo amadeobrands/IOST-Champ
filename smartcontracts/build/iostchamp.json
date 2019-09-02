@@ -1,0 +1,46 @@
+{
+    "lang": "javascript",
+    "version": "1.0.0",
+    "abi": [
+        {
+            "name": "can_update",
+            "args": [
+                "string"
+            ]
+        },
+        {
+            "name": "registerUser",
+            "args": [
+                "string",
+                "string",
+                "string"
+            ]
+        },
+        {
+            "name": "getUser",
+            "args": [
+                "string"
+            ]
+        },
+        {
+            "name": "updateUserLevel",
+            "args": [
+                "string",
+                "string"
+            ]
+        },
+        {
+            "name": "updateUserCertificationLevel",
+            "args": [
+                "string",
+                "string"
+            ]
+        },
+        {
+            "name": "resetUser",
+            "args": [
+                "string"
+            ]
+        }
+    ]
+}
