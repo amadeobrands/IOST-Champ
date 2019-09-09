@@ -1,10 +1,12 @@
-const ChampContract = require('./KlaytnChamp.json')
-const CountContract = require('./Count.json')
+// const ChampContract = require('../smartcontracts/abi/iostChamp.json')
+// const CountContract = require('../smartcontracts/abi/Count.json')
 const rp = require('request-promise-native');
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
-const Caver = require('caver-js')
+
+
+// TODO: IOST js
 const wrap = require("./middleware/wrap")
 const helpers = require('./helpers.js')
 
@@ -13,19 +15,29 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const caver = new Caver(process.env.URL)
-caver.klay.accounts.wallet.add(process.env.PRIVATE_KEY);
-const champContract = new caver.klay.Contract(ChampContract.abi, process.env.CONTRACT_ID)
+
+const IOST = require('iost')
+
+// init iost sdk
+let iost = new IOST.IOST({ // will use default setting if not set
+  gasRatio: 100,
+  gasLimit: 2000000,
+  delay:0,
+}, new IOST.HTTPProvider('http://localhost:30001'));
+
+let account = "iost_champ_admin";
+let kp = new IOST.KeyPair(/* your private key in type Buffer */);
+
 
 app.post('/' + process.env.SECRET_RESET_URL, wrap(async (req, res, next) => {
   const address = req.body.address
 
   console.log(address)
-  const result = await champContract.methods.resetUser(address).send({
-    gas: '200000',
-    from: process.env.ADDRESS,
-  })
-  res.status(200).send(result)
+  // const result = await champContract.methods.resetUser(address).send({
+  //   gas: '200000',
+  //   from: process.env.ADDRESS,
+  // })
+  // res.status(200).send(result)
 }))
 
 app.post('/registerUser', wrap(async (req, res, next) => {
@@ -35,11 +47,11 @@ app.post('/registerUser', wrap(async (req, res, next) => {
   const randomNumber = Math.floor(1 + (Math.random() * 1000000))
 
   try {
-    const result = await champContract.methods.registerUser(address, caver.utils.hexToBytes(googleHash)).send({
-      gas: '200000',
-      from: process.env.ADDRESS,
-      value: randomNumber
-    })
+    // const result = await champContract.methods.registerUser(address, caver.utils.hexToBytes(googleHash)).send({
+    //   gas: '200000',
+    //   from: process.env.ADDRESS,
+    //   value: randomNumber
+    // })
     res.status(200).send()
   }catch(err){
     res.status(422).send(err)
@@ -53,24 +65,24 @@ app.post('/checkLevel2', wrap(async (req, res, next) => {
   // const balance = await caver.klay.getBalance(address)
   const txHash = req.body.txHash
 
-  const result = await helpers.findTransactionsBy(
-    address,
-    async tx =>
-      tx.type === 'TxTypeValueTransfer'
-      && tx.from.toUpperCase() === process.env.FAUCET_ADDRESS.toUpperCase()
-      && tx.txHash === txHash,
-    null    // We don't need the txn detail now
-  )
-
-  if(result.length > 0){
-    const result = await champContract.methods.updateUserLevel(address,2).send({
-      gas: '200000',
-      from: process.env.ADDRESS,
-    })
-    res.status(200).send("OK")
-  }else{
-    res.status(406).send("WRONG")
-  }
+  // const result = await helpers.findTransactionsBy(
+  //   address,
+  //   async tx =>
+  //     tx.type === 'TxTypeValueTransfer'
+  //     && tx.from.toUpperCase() === process.env.FAUCET_ADDRESS.toUpperCase()
+  //     && tx.txHash === txHash,
+  //   null    // We don't need the txn detail now
+  // )
+  //
+  // if(result.length > 0){
+  //   const result = await champContract.methods.updateUserLevel(address,2).send({
+  //     gas: '200000',
+  //     from: process.env.ADDRESS,
+  //   })
+  //   res.status(200).send("OK")
+  // }else{
+  //   res.status(406).send("WRONG")
+  // }
 
 }))
 
@@ -78,22 +90,22 @@ app.post('/checkLevel3', wrap(async (req, res, next) => {
   const address = req.body.address
   const contractAddress = req.body.contract
 
-  const result = await helpers.findTransactionsBy(
-    address,
-    async tx =>
-      tx.contractAddress.toUpperCase() === contractAddress.toUpperCase(),
-    null    // We don't need the txn detail now
-  )
-
-  if(result.length > 0){
-    const result = await champContract.methods.updateUserLevel(address,3).send({
-      gas: '200000',
-      from: process.env.ADDRESS,
-    })
-    res.status(200).send("OK")
-  }else{
-    res.status(406).send("WRONG")
-  }
+  // const result = await helpers.findTransactionsBy(
+  //   address,
+  //   async tx =>
+  //     tx.contractAddress.toUpperCase() === contractAddress.toUpperCase(),
+  //   null    // We don't need the txn detail now
+  // )
+  //
+  // if(result.length > 0){
+  //   const result = await champContract.methods.updateUserLevel(address,3).send({
+  //     gas: '200000',
+  //     from: process.env.ADDRESS,
+  //   })
+  //   res.status(200).send("OK")
+  // }else{
+  //   res.status(406).send("WRONG")
+  // }
 }))
 
 app.post('/checkLevel4', wrap(async (req, res, next) => {

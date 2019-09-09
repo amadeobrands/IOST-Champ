@@ -6,40 +6,15 @@
   >
     <q-card flat class="my-card">
       <q-card-section>
-        <div class="text-h6">Create a Klatyn Account</div>
-        <div class="text-subtitle2">Getting started with Klaytn.</div>
+        <div class="text-h6">Install and activate iWallet browser extension</div>
+        <div class="text-subtitle2">Getting started with IOST.</div>
       </q-card-section>
 
       <q-card-section>
         <q-list>
           <q-item>
             <q-item-section>
-              <q-item-label>1. Go to <a href="https://baobab.klaytnwallet.com/" target="_blank">Klaytn Wallet</a> and click the <strong>"create account"</strong> button. </q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item>
-            <q-item-section>
-              <q-item-label>2. Follow the 3-step instructions on how to create a new account. You will be asked to provide a password, <strong>download your keystore</strong> and keep your private key. </q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item>
-            <q-item-section>
-              <q-item-label>3. Paste your <strong>address</strong> in the texbox below: </q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item>
-            <q-item-section>
-              <q-input
-                :rules="[value => isAddressValid(value) || 'You need to enter a valid Klaytn address!']"
-                :disable="level > 1"
-                :value="solution"
-                @change="event => handleChange(event.target.value)"
-                label="Public address"
-                square outlined
-              />
+              <q-item-label>1. Go to <a href="https://chrome.google.com/webstore/detail/iwallet/kncchdigobghenbbaddojjnnaogfppfj?hl=en" target="_blank">iWallet extension on Chrome store</a> and install. </q-item-label>
             </q-item-section>
           </q-item>
 
@@ -68,15 +43,14 @@
       </q-card-section>
       <q-separator inset />
       <q-card-section>
-        Remember to keep your keystore file. You will need it in the succeeding levels. <br/> A Klatyn account gives access to your balance and smart contracts. <br/><br/>
-        To learn more about Klatyn accounts, read the <a href="https://docs.klaytn.com/klaytn/design/account">documentation</a>.
+        Since there is no IOST wallet extension for other browsers yet, and we want to promote secure usage of IOST,
+        IOST Champ only supports Chrome for now. Sorry Firefox users!
       </q-card-section>
     </q-card>
   </div>
 </template>
 
 <script>
-import { CAVER } from 'boot/caver'
 
 export default {
   components: {
@@ -105,18 +79,6 @@ export default {
   computed: {
   },
   methods: {
-    isAddressValid (address) {
-      return CAVER.utils.isAddress(address)
-    },
-    handleChange (solution) {
-      if (this.isAddressValid(solution)) {
-        this.$emit('setValue', { address: solution })
-      }
-    },
-    handleSubmit () {
-      if (this.level > 1) this.$router.push('/level/2')
-      else this.$emit('finish')
-    }
 
   }
 }

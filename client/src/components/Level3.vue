@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { CAVER } from 'boot/caver'
+// import { CAVER } from 'boot/iost'
 
 export default {
   components: {
@@ -126,9 +126,6 @@ export default {
     return {}
   },
   methods: {
-    isAddressValid (address) {
-      return CAVER.utils.isAddress(address)
-    }
   }
 }
 </script>

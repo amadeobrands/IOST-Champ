@@ -1,8 +1,5 @@
 import { axiosHTTP } from 'boot/axios'
-import { contract } from 'boot/caver'
-
-// Fix for old web3 flaw: https://github.com/ethereum/web3.js/issues/1986
-process.versions = { node: '11.2.0' }
+import { isIWalletInstalled } from 'boot/iost'
 
 export async function httpResetUser (context, address) {
   axiosHTTP({
@@ -44,6 +41,24 @@ export async function httpCheckAmount (context, { address, random }) {
     }
   })
 }
+
+export async function httpCheckLevel1 (context) {
+
+  try {
+    const result = await axiosHTTP({
+      baseURL: process.env.CHAMP_API_URL,
+      method: 'post',
+      url: '/checkLevel1',
+      data: {
+        solution: isIWalletInstalled()
+      }
+    })
+    context.commit('user/submissionProgress', 40, { root: true })
+  } catch (err) {
+    context.commit('user/submissionProgress', 0, { root: true })
+  }
+}
+
 export async function httpCheckLevel2 (context, { address, solution }) {
   try {
     const result = await axiosHTTP({

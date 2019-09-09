@@ -2,28 +2,28 @@
   "name": "client",
   "version": "0.0.1",
   "description": "Blockchain-based usage and developer challenge with verifiable scoring and on-chain certification.",
-  "productName": "Klaytn Champ",
+  "productName": "IOST Champ",
   "cordovaId": "org.cordova.quasar.app",
   "author": "info@blockdevs.asia",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0",
-    "deploytera": "quasar build && rsync -avr dist/spa/ teraweb:./klaytn.champ.blockdevs.asia/web/public"
+    "deploytera": "quasar build && rsync -avr dist/spa/ teraweb:./iost.champ.blockdevs.asia/web/public"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.3.1",
     "axios": "^0.18.0",
-    "caver-js": "^0.8.4-2",
     "firebase": "^6.0.4",
+    "iost": "^0.1.19",
     "lodash": "^4.17.11",
-    "quasar": "^1.0.0-beta.0",
+    "quasar": "^1.1.0",
     "vue-confetti": "^1.1.3",
     "vuex-easy-firestore": "^1.34.0"
   },
   "devDependencies": {
-    "@quasar/app": "^1.0.0-beta.0",
-    "@quasar/quasar-app-extension-dotenv": "^1.0.0-beta.10",
+    "@quasar/app": "^1.0.6",
+    "@quasar/quasar-app-extension-dotenv": "^1.0.0-beta.11",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.10.0",

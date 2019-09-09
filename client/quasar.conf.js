@@ -8,7 +8,7 @@ module.exports = function (ctx) {
       'firebase',
       'main',
       'axios',
-      'caver'
+      'iost'
     ],
 
     css: [

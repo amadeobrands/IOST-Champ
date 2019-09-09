@@ -99,7 +99,7 @@ export default {
     level1submit () {
       this.$store.commit('user/inputAttempts', this.inputAttempts + 1)
       this.$store.commit('user/submissionProgress', 10)
-      this.$store.dispatch('external/httpRegisterUser', this.address)
+      this.$store.dispatch('external/checkLevel1', { address: this.address, solution: this.level2solution })
     },
     level2submit () {
       this.$store.commit('user/inputAttempts', this.inputAttempts + 1)
