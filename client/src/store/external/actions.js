@@ -1,5 +1,10 @@
 import { axiosHTTP } from 'boot/axios'
-import { isIWalletInstalled } from 'boot/iost'
+import { isIWalletInstalled, SDK } from 'boot/iost'
+
+export async function iostGetAccount (context, accountName) {
+  const result = await SDK.currentRPC.blockchain.getAccountInfo(accountName)
+  console.log(result)
+}
 
 export async function httpResetUser (context, address) {
   axiosHTTP({
@@ -12,15 +17,15 @@ export async function httpResetUser (context, address) {
   })
 }
 
-export async function httpRegisterUser (context, address) {
+export async function httpRegisterUser (context, userIostKey) {
   try {
     const result = await axiosHTTP({
       baseURL: process.env.CHAMP_API_URL,
       method: 'post',
       url: '/registerUser',
       data: {
-        address: address,
-        googleHash: '0x3e27a893dc40ef8a7f0841d96639de2f58a132be5ae466d40087a2cfa83b7179'
+        userIostKey: userIostKey,
+        userId: '0x3e27a893dc40ef8a7f0841d96639de2f58a132be5ae466d40087a2cfa83b7179'
       }
     })
 
@@ -42,37 +47,42 @@ export async function httpCheckAmount (context, { address, random }) {
   })
 }
 
-export async function httpCheckLevel1 (context) {
-
-  try {
-    const result = await axiosHTTP({
-      baseURL: process.env.CHAMP_API_URL,
-      method: 'post',
-      url: '/checkLevel1',
-      data: {
-        solution: isIWalletInstalled()
-      }
-    })
+/**
+ * Checks level1. Does not interact with contract yet because user has no account.
+ * @param context
+ * @returns {Promise<void>}
+ */
+export async function checkLevel1 (context) {
+  if (isIWalletInstalled() && context.rootState.user.level < 2) {
     context.commit('user/submissionProgress', 40, { root: true })
-  } catch (err) {
+    context.commit('user/level', 2, { root: true })
+  } else {
     context.commit('user/submissionProgress', 0, { root: true })
   }
 }
 
+/**
+ * Checks level 2 :
+ * @param context
+ * @param address
+ * @param solution
+ * @returns {Promise<void>}
+ */
 export async function httpCheckLevel2 (context, { address, solution }) {
   try {
-    const result = await axiosHTTP({
-      baseURL: process.env.CHAMP_API_URL,
-      method: 'post',
-      url: '/checkLevel2',
-      data: {
-        address: address,
-        txHash: solution
-      }
-    })
+    // console.log('level2check')
+    // const result = await axiosHTTP({
+    //   baseURL: process.env.CHAMP_API_URL,
+    //   method: 'post',
+    //   url: '/checkLevel2',
+    //   data: {
+    //     address: address,
+    //     txHash: solution
+    //   }
+    // })
     context.commit('user/submissionProgress', 40, { root: true })
-
-    console.log('level2check', result)
+    //
+    // console.log('level2check', result)
   } catch (err) {
     context.commit('user/submissionProgress', 0, { root: true })
   }

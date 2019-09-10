@@ -7,45 +7,40 @@
 
     <q-card flat class="my-card">
       <q-card-section>
-        <div class="text-h6">Faucet and Klaytnscope</div>
-        <div class="text-subtitle2">Fund your Klatyn account with test KLAY and view the transaction from Klaytnscope.</div>
+        <div class="text-h6">IOST blockchain account</div>
+        <div class="text-subtitle2">Enable your existing account in iWallet, or create a new account.</div>
       </q-card-section>
 
       <q-card-section>
         <q-list>
           <q-item>
             <q-item-section>
-              <q-item-label>1. Go back to your <a href="https://baobab.klaytnwallet.com/" target="_blank">Klaytn Wallet</a> and select <strong>"KLAY Faucet"</strong> from the menu on the left side. </q-item-label>
+              <q-item-label>
+                1. If you have an existing account and it's loaded in iWallet (make sure iWallet is UNLOCKED): Check solution immediately.
+              </q-item-label>
             </q-item-section>
           </q-item>
 
           <q-item>
-            <q-item-section>
-              <q-item-label>2. To fund your account, click the <strong>"Run Faucet"</strong> button. You will receive <strong>5 Test_KLAY</strong>. </q-item-label>
-            </q-item-section>
+            <q-btn @click="checkWallet">Check iWallet</q-btn>
           </q-item>
 
           <q-item>
             <q-item-section>
-              <q-item-label>3. <strong>Copy your address</strong> from your wallet and go to <a href="https://baobab.klaytnscope.com/" target="_blank">Klaytnscope</a>. Then <strong>paste your address</strong> in the "search by" textbox and click the search icon. </q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item>
-            <q-item-section>
-              <q-item-label>4. You should be able to see the transaction from the faucet at the top of the list. <strong>Copy the Tx Hash</strong> and paste it below.</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item>
-            <q-item-section>
+              <q-item-label>
+                2. If you don't have an IOST account, you can create one with Blockdevs.
+              </q-item-label>
               <q-input
                 square outlined
-                label="Transaction hash"
+                label="IOST Account Name"
                 :disable="level > 2"
-                :value="solution"
-                @blur="(event) => $emit('setValue', {level2solution: event.target.value})"
+                v-model="proposedAccountName"
               />
+              <q-btn
+                @click="checkAvailability"
+              >
+                Check name availability
+              </q-btn>
             </q-item-section>
           </q-item>
 
@@ -59,22 +54,6 @@
                   :buttonLevel="2"
                   v-on:finish="$emit('finish')"
                 />
-
-<!--                <q-btn-->
-<!--                  :disable="level > 2"-->
-<!--                  color="green"-->
-<!--                  text-color="black"-->
-<!--                  label="Check my solution"-->
-<!--                  @click="$emit('finish')"-->
-<!--                />-->
-<!--                <q-btn-->
-<!--                  v-if="level > 2 && selectedLevel === 2"-->
-<!--                  color="green"-->
-<!--                  text-color="black"-->
-<!--                  icon="check"-->
-<!--                  label="Proceed to Level 3"-->
-<!--                  to="/level/3"-->
-<!--                />-->
               </div>
             </q-item-section>
           </q-item>
@@ -89,9 +68,7 @@
       </q-card-section>
       <q-separator inset />
       <q-card-section>
-        A faucet drips small amounts of cryptocurrency over a set period of time.<br/>
-        Klaytnscope is Klatyn's block explorer. It allows you to find data by monitoring network health and statistics of Klaytn as well as profiling blocks and transactions on Klaytn.<br/><br/>
-        To learn more about Klaytnscope read the <a href="https://docs.klaytn.com/toolkit/scope">documentation</a>.
+        Explain Accounts
       </q-card-section>
     </q-card>
 
@@ -99,6 +76,9 @@
 </template>
 
 <script>
+import { SDK } from 'boot/iost'
+import { mapActions } from 'vuex'
+
 export default {
   components: {
     LevelSubmitButton: () => import('components/LevelSubmitButton.vue')
@@ -124,7 +104,22 @@ export default {
     }
   },
   data () {
-    return {}
+    return {
+      proposedAccountName: ''
+    }
+  },
+  methods: {
+
+    ...mapActions('external', [
+      'iostGetAccount'
+    ]),
+
+    checkWallet () {
+      console.log(SDK)
+    },
+    checkAvailability () {
+      this.iostGetAccount(this.proposedAccountName)
+    }
   }
 }
 </script>

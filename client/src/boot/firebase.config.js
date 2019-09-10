@@ -1,9 +1,9 @@
 export default {
-  apiKey: "AIzaSyAowbr9tOZZYo_NcGqj--u0aTqK3BcP8dg",
-  authDomain: "iostchamp.firebaseapp.com",
-  databaseURL: "https://iostchamp.firebaseio.com",
-  projectId: "iostchamp",
-  storageBucket: "iostchamp.appspot.com",
-  messagingSenderId: "1017300685629",
-  appId: "1:1017300685629:web:4cbf84f44e594b0e"
+  apiKey: 'AIzaSyBpTO48xmrJutJrbqkKzn-mDWbu_N0AITQ',
+  authDomain: 'champions-d3050.firebaseapp.com',
+  databaseURL: 'https://champions-d3050.firebaseio.com',
+  projectId: 'champions-d3050',
+  storageBucket: 'champions-d3050.appspot.com',
+  messagingSenderId: '235535837196',
+  appId: '1:235535837196:web:521f14f1112c5dd161e629'
 }

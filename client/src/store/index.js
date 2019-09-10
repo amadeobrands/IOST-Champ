@@ -11,7 +11,7 @@ import createEasyFirestore from 'vuex-easy-firestore'
 Vue.use(Vuex)
 
 const userModule = {
-  firestorePath: 'users/{uid}',
+  firestorePath: 'iost/{uid}',
   firestoreRefType: 'doc',
   moduleName: 'user',
   statePropName: 'data',

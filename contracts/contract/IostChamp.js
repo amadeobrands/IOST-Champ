@@ -5,31 +5,35 @@ const blockchain = new rBlockChain();
 
 class iostChamp
 {
-   
+
     init() {
     }
 
-    //smart contract can be updated 
+    //smart contract can be updated
     can_update(data) {
         return blockchain.requireAuth(blockchain.contractOwner(), "active");
     }
-    
+
     registerUser(to, randomAmount, googleHash){
         if (storage.mapHas(tx.publisher, "level")) {
             throw new Error("Cannot register twice");
         }
+
         if (randomAmount <= 0) {
             throw new Error("Random amount cannot be 0");
         }
-       
+
         //transfer random amount
         blockchain.transfer(tx.publisher, to, randomAmount, "register user")
+
         //if transfer is successfull register the user
         storage.mapPut(tx.publisher, "level", "1");
         storage.mapPut(tx.publisher, "certificationLevel", "0");
         storage.mapPut(tx.publisher, "googleHash", googleHash);
         storage.mapPut(tx.publisher, "randomAmount", randomAmount);
+
         console.log(tx.publisher)
+
         return blockchain.requireAuth(blockchain.contractOwner(), "owner");
     }
 

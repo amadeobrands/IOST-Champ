@@ -5,8 +5,6 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 
-
-// TODO: IOST js
 const wrap = require("./middleware/wrap")
 const helpers = require('./helpers.js')
 
@@ -23,10 +21,10 @@ let iost = new IOST.IOST({ // will use default setting if not set
   gasRatio: 100,
   gasLimit: 2000000,
   delay:0,
-}, new IOST.HTTPProvider('http://localhost:30001'));
+}, new IOST.HTTPProvider(process.env.IOST_NODE_URL));
 
-let account = "iost_champ_admin";
-let kp = new IOST.KeyPair(/* your private key in type Buffer */);
+let account = "champ_admin";
+// let kp = new IOST.KeyPair(/* your private key in type Buffer */);
 
 
 app.post('/' + process.env.SECRET_RESET_URL, wrap(async (req, res, next) => {
@@ -41,8 +39,8 @@ app.post('/' + process.env.SECRET_RESET_URL, wrap(async (req, res, next) => {
 }))
 
 app.post('/registerUser', wrap(async (req, res, next) => {
-  const address = req.body.address
-  const googleHash = req.body.googleHash
+  const userIostKey = req.body.userIostKey
+  const userId = req.body.userId
 
   const randomNumber = Math.floor(1 + (Math.random() * 1000000))
 
@@ -58,6 +56,22 @@ app.post('/registerUser', wrap(async (req, res, next) => {
   }
 }))
 
+app.post('/checkLevel1', wrap(async (req, res, next) => {
+  // Solution is supposed to be "true" (but sent by browser)
+  const solution = req.body.solution
+
+
+  if(solution){
+    const result = await champContract.methods.updateUserLevel(address,2).send({
+      gas: '200000',
+      from: process.env.ADDRESS,
+    })
+    res.status(200).send("OK")
+  }else{
+    res.status(406).send("WRONG")
+  }
+
+}))
 
 app.post('/checkLevel2', wrap(async (req, res, next) => {
   const address = req.body.address
